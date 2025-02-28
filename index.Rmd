@@ -10,10 +10,19 @@ output:
 library(tidyverse)
 library(flexdashboard)
 library(plotly)
+source("compmus.R")
+
+```
+### Introduction
+
+A friend and I made a few songs in de Christmas Holidays in 2024. I wanted to use these songs, because of how much time we spend making them in my friends basement where we never saw the light of day.  The first song 'lennart-p-1' I actually wrote in high school. We recorded this in her basement. She plays the keys and I play guitar, which is why these will be the most dominant instruments. The song has a long build-up using a reoccurring themes which eventually harmonize together. The ending is somewhat faster and more aggressive, to create some contrast in the song.
+We wrote the second song 'lennart-p-2' together in the basement. It started somewhat as a pop song, but gradually changed to some kind of rock symphony? We wanted to express our skill in the sounds of the instruments and technique in the solo's. We put many hours in this one.
+```{r}
 
 ```
 
-### Heading
+
+### compmus2025.csv
 
 ```{r}
 compmus2025 <- read_csv("compmus2025.csv")
@@ -54,4 +63,224 @@ ggplotly()
 ```
 
 ***
-Add a sidebar description: skoobiedoodapflap
+In this graph you can see the approachability and engagingness. I thought there could be a correlation. I hypothesized that the higher the approachability, the higher the engagingness should be. This was wrong, there is no clear sign of a correlation in this graph. So I think I don't really know what is meant by approachability.
+I do, however, see a correlation between engagingness and arousal. It looks like the higher the engagingness, the higher the arousal is. Which makes sense when it comes to mind.
+
+***
+
+
+### Chroma and Timbre
+
+#### lennart-p-1 chroma
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>                         # Change the track
+  compmus_chroma(norm = "euclidean") |>                 # Change the norm
+  ggplot(aes(x = time, y = pc, fill = value)) + 
+  geom_raster() +
+  scale_y_continuous(
+    breaks = 0:11,
+    minor_breaks = NULL,
+    labels = c(
+                "C", "C#|Db", "D", "D#|Eb",
+                "E", "F", "F#|Gb", "G",
+                "G#|Ab", "A", "A#|Bb", "B"
+              )
+  ) +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+This spectogram shows the chromagram of 'lennart-p-1'. From this chromagram we can see that most of the song was in D, because D, tonic, F#, the third and A, the fifth. The C# can be explained because the chord Dmaj7 is played a lot. The B shows up pretty often as well. This is probably because of the frequent occurrence of E7.
+
+***
+
+#### lennart-p-2 timbre
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>                           # Change the track
+  compmus_mfccs(norm = "euclidean") |>                  # Change the norm
+  ggplot(aes(x = time, y = mfcc, fill = value)) + 
+  geom_raster() +
+  scale_y_continuous(
+    breaks = 0:12,
+    minor_breaks = NULL,
+  ) +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = "Coefficient Number", fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+Here we can see the timbre of the first song. Noticeable is the beginning and the last third of the song. The beginning starts only with guitar, which could be the reason for that difference in color.  The last third really different from the rest of the song. It's more aggressive in sounds (more distortion) and faster in tempo. This switch was made with a break, which can be seen after 150, where it is very yellow.
+
+***
+
+#### lennart-p-2 chroma
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>                         # Change the track
+  compmus_chroma(norm = "euclidean") |>                 # Change the norm
+  ggplot(aes(x = time, y = pc, fill = value)) + 
+  geom_raster() +
+  scale_y_continuous(
+    breaks = 0:11,
+    minor_breaks = NULL,
+    labels = c(
+                "C", "C#|Db", "D", "D#|Eb",
+                "E", "F", "F#|Gb", "G",
+                "G#|Ab", "A", "A#|Bb", "B"
+              )
+  ) +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+This song is in G minor, because of the G, Bb, D, or in Eb major, because of Eb, G and Bb. It is a bit tricky, but I do think the key is G minor. The ending is a long open ending on G and D, which is a G power chord. I must say, why C, Eb and A occur this much is unclear to, even though I was one of the two writers.
+
+***
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>                           # Change the track
+  compmus_mfccs(norm = "euclidean") |>                  # Change the norm
+  ggplot(aes(x = time, y = mfcc, fill = value)) + 
+  geom_raster() +
+  scale_y_continuous(
+    breaks = 0:12,
+    minor_breaks = NULL,
+  ) +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = "Coefficient Number", fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+There is a silence after the intro. This silence is portrayed a clearer yellow just before 100 seconds.
+
+***
+
+### Self-Similarity Matrices
+
+#### Chroma-based self-similarity matrix lennart-p-1
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>                           # Change the track
+  compmus_chroma(norm = "manhattan") |>                 # Change the norm
+  compmus_self_similarity(
+    feature = pc,
+    distance = "chebyshev"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+Here you can see some structure of the song. There are a guitar solo's both at the more yellow areas around; One around 50 seconds and one around 160 seconds. Also the ending is quite noticeable.
+
+***
+
+#### Chroma-based self-similarity matrix lennart-p-2
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>                           # Change the track
+  compmus_chroma(norm = "manhattan") |>                 # Change the norm
+  compmus_self_similarity(
+    feature = pc,
+    distance = "chebyshev"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+Here you can see the structure of the second song. Around 50 seconds, you can see the first transition to another song segment. Just after 100 seconds, you can see the next transitioning. From here on, the song changes gradually, as I mentioned in the introduction. Around 240-250 seconds you can see a somewhat brighter color. At this point in time, the guitar and Hammond solo's take place.
+
+***
+
+#### Timbre-based self-similarity matrix lennart-p-1
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>                           # Change the track
+  compmus_mfccs(norm = "chebyshev") |>                  # Change the norm
+  compmus_self_similarity(
+    feature = mfcc,
+    distance = "euclidean"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+In this matrix you can see the intro and the more aggressive faster longer outro. The rest seems somewhat the same.
+
+***
+
+#### Timbre-based self-similarity matrix lennart-p-2
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>                           # Change the track
+  compmus_mfccs(norm = "chebyshev") |>                  # Change the norm
+  compmus_self_similarity(
+    feature = mfcc,
+    distance = "euclidean"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+In this matrix you can see the intro at 0 till 20 seconds, the next segment around 60 seconds, and from 100 the same timbre.
+I think that overall the chroma-based self-similarity matrices showed the structure of the songs better in this case. So the songs structures are more based on the difference in pitches than in timbre.
+***
+
+```{r}
+"C:/ComMus/ComMus/features/features/jasper-v-2.json" |>                           # Change the track
+  compmus_chroma(norm = "euclidean") |>                 # Change the norm
+  compmus_self_similarity(
+    feature = pc,
+    distance = "manhattan"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+This song is Hey Joe from Jimi Hendrix, a classic! 
+
+***
+
+```{r}
+"C:/ComMus/ComMus/features/features/jasper-v-2.json" |>                           # Change the track
+  compmus_mfccs(norm = "chebyshev") |>                  # Change the norm
+  compmus_self_similarity(
+    feature = mfcc,
+    distance = "euclidean"                             # Change the distance
+  ) |>   
+  ggplot(aes(x = xtime, y = ytime, fill = d)) + 
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +               # Change the colours?
+  labs(x = "Time (s)", y = NULL, fill = NULL) +
+  theme_classic()                                      # Change the theme?
+```
+
+***
+Both the matrices have a similar structure. This is because the song has an overall simple structure. It's the same chord scheme over and over again. The only things that change is the switches between singing and playing the guitar. But that doesn't seem enough to really stand out on the matrices.
+
+***
+
+### Conclusion
