@@ -245,6 +245,7 @@ In this matrix you can see the intro at 0 till 20 seconds, the next segment arou
 I think that overall the chroma-based self-similarity matrices showed the structure of the songs better in this case. So the songs structures are more based on the difference in pitches than in timbre.
 ***
 
+#### matrices from random song in the list
 ```{r}
 "C:/ComMus/ComMus/features/features/jasper-v-2.json" |>                           # Change the track
   compmus_chroma(norm = "euclidean") |>                 # Change the norm
