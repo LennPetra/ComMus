@@ -387,6 +387,11 @@ key_templates <-
   theme_classic()                                      # Change the theme?
 ```
 
+***
+The key of this song is mostly D major and F# minor. They switch very often. I sometimes used chords like D7, which is outside the original key. The gram shows that also A major is a frequently used key. I have to disagree, because when I play A, I play A7.
+
+***
+
 #### Keygram lennart-p-2
 
 ```{r}
@@ -403,6 +408,11 @@ key_templates <-
   labs(x = "Time (s)", y = "Template", fill = NULL) +
   theme_classic()                                      # Change the theme?
 ```
+
+***
+The second songs keygram  is much clearer. The key is G minor.
+
+***
 
 #### Chordogram lennart-p-1
 
@@ -421,6 +431,11 @@ key_templates <-
   theme_classic()                                      # Change the theme?
 ```
 
+***
+This is the chordogram of the first song. Even though it seems very random, it is a little bit accurate. The chords till around 60 seconds are Dmaj7, E7, A7, F#min7, D7 and C#min7. The second part from 60 seconds to 85 contains F#min7, E7, Dmaj7, C#min7, C#7, E7 and Bmin7.
+
+***
+
 #### Chordogram lennart-p-2
 
 ```{r}
@@ -438,5 +453,11 @@ key_templates <-
   theme_classic()                                      # Change the theme?
 ```
 
+***
+The only part this chordogram is only a bit certain in the bridge around 55 seconds to 100. Which is strange, because this song has simpler chords than the previous one. I think it is so uncertain because of all the motives that are played op on it.
+
+***
+
 ### Conclusion
 
+I don't know what this is supposed to contain. Any feedback/help?
