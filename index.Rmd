@@ -458,6 +458,139 @@ The only part this chordogram is only a bit certain in the bridge around 55 seco
 
 ***
 
+### Novelty Functions and Tempograms
+
+#### Energy Novelty lennart-p-1
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>
+  compmus_energy_novelty() |> 
+  ggplot(aes(t, novelty)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "Energy Novelty")
+```
+
+***
+The Energy Novelty shows the difference in energy compared to the previous moment in the song. The peak around 20 seconds can be explained by the addition of the bass, drum and lead guitar. The peak around 155 can be explained by the beginning of the second guitar solo. Just before the solo is a silence, which can be seen in the gram. Than the solo begins, which is a intense difference from the previous silence. The smaller peak in the middle around 90 seconds is the beginning of the theme after the first guitar solo. This solo ends with a long ending note, than comes both the themes simultaniously.
+
+***
+
+#### Energy Novelty lennart-p-2
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>
+  compmus_energy_novelty() |> 
+  ggplot(aes(t, novelty)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "Energy Novelty")
+```
+
+***
+In the second song are more peaks than the previous song, but these peaks are less obvious. The first peak is just the start of the song. The second peak is the drum and rhythm guitar that joins. There is a kind of silence at 58 seconds and a new part of the song after that. The peak just before 200 seconds is randomly towards the end of the guitar solo. I can't explain this one. Maybe one screeching bend screaming above all the other parts...?
+
+***
+
+#### Spectral Novelty lennart-p-1
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>
+  compmus_spectral_novelty() |> 
+  ggplot(aes(t, novelty)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "Spectral Novelty")
+```
+
+***
+The Spectral Novelty compares the one window of music with the previous window and shows if the difference is high or low. The first song shows little structure. The only really noticeable things are the break just after 150 seconds and the ending after 250 seconds. This last one is actually interesting, because it seems to decline. This can be explained by the drum leaving early, and being very repetitive afterwards, except for the final blow!
+
+***
+
+#### Spectral Novelty lennart-p-2
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>
+  compmus_spectral_novelty() |> 
+  ggplot(aes(t, novelty)) +
+  geom_line() +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "Spectral Novelty")
+```
+
+***
+The structure of the second quite more interesting. At 20 seconds, the drum, bass and rhythm guitar start playing. At 58 seconds, the intro stops and at 62 seconds the next more calm part starts. At around 98 seconds, the violins (played on keyboard) that join, can be seen. Also, at the end you can see a decline, because the ending is kind of repetitive.
+
+***
+
+#### Non-cyclic Tempogram lennart-p-
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>
+  compmus_tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+
+***
+The tempo of the first song looks like to be 90 BPM. Which is very correct! The shift in the gram around 155 seconds is very noticeable. Here is a tempo change! The BPM of this second part of the song is 109 BPM.
+
+***
+
+#### Non-cylcic Tempogram lennart-p-2
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>
+  compmus_tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+
+***
+The second song is 105 BPM. Here is no tempo change.
+
+***
+
+#### Cyclic Tempogram lennart-p-1
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-1.json" |>
+  compmus_tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+
+***
+In this cyclic tempogram of the first song, you can see the shift as well. 
+
+***
+
+#### Cyclic Tempogram  lennart-p-2
+
+```{r}
+"C:/ComMus/ComMus/features/features/lennart-p-2.json" |>
+  compmus_tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+
+***
+In this cyclic tempogram of the second song, you can see that the tempo is more spiky. This is probably because the first song was actually not a real drum. It was a basic tempo played by the recording software. The second song was recorded on a real drum, played by a real drummer. Interesting to see that the difference was recognized! 
+
+***
+
 ### Conclusion
 
-I don't know what this is supposed to contain. Any feedback/help?
